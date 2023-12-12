@@ -8,20 +8,17 @@ services:
       - postgres-data:/var/lib/postgresql/data
       
     env_file:
-      - ".env"
+      - "./backend/.env"
     ports:
       - "5432:5432"
   backend:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: "./backend/"
+      dockerfile: "Dockerfile"
     command: "make run"
-    volumes:
-
-      - "./models/:/app/models"
     restart: always
     env_file:
-      - .env
+      - "./backend/.env"
     environment:
       - POSTGRES_HOST=postgres
     ports:
@@ -30,6 +27,4 @@ services:
 
 
 volumes:
-  redis:
-  redis-config:
   postgres-data:
