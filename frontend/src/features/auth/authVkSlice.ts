@@ -9,6 +9,17 @@ const groupGetUrl = `https://api.vk.ru/method/groups.get?v=5.199`;
 const vkApi = {
     async fetchAndUseItems(authData: vkAuthResponseData) {
         // Fetch data from groupGetUrl
+        const userDataResponse = await fetch(
+            `https://api.vk.ru/method/users.get?v=5.199`,
+            {
+                headers: {
+                    Authorization: `Bearer ${authData.access_token}`,
+                },
+            },
+        );
+        
+        console.log("u", userDataResponse);
+
         const response = await fetch(groupGetUrl, {
             headers: {
                 Authorization: `Bearer ${authData.access_token}`,
@@ -43,6 +54,13 @@ const vkApi = {
         // groups: данные из groupInfoResponse.response.groups
         // }
         console.log("g", groupInfoResponse);
+        const response_data = {
+            first_name: userDataResponse.response[0].first_name,
+            last_name: userDataResponse.response[0].last_name,
+            user_id: authData.user_id,
+            groups: groupInfoResponse.response,
+        };
+        return response_data;
     },
 };
 
