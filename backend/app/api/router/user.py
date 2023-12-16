@@ -22,11 +22,11 @@ async def get_user(
     db: AsyncSession = Depends(get_session),
 ):
     stmt = (
-        sa.select(User)
-        .options(orm.selectinload(User.role))
-        .where(User.id == user.user_id)
+        sa.select(VkUser)
+        .options(orm.selectinload(VkUser.groups))
+        .where(VkUser.id == user.user_id)
     )
-    db_user: User | None = (await db.execute(stmt)).unique().scalar()
+    db_user: VkUser | None = (await db.execute(stmt)).unique().scalar()
     if db_user is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -36,4 +36,9 @@ async def get_user(
     return UserDto.model_validate(db_user)
 
 
-
+@router.get("/pred")
+async def get_profesions(
+    user: UserTokenData = Depends(get_current_user),
+    db: AsyncSession = Depends(get_session),
+):
+    ...

@@ -3,7 +3,6 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base import Base, TimestampMixin
 from .group import VkGroup
-from .role import Role
 
 
 class User(Base, TimestampMixin):
@@ -13,9 +12,9 @@ class User(Base, TimestampMixin):
     last_name: Mapped[str] = mapped_column(sa.Text)
     email: Mapped[str] = mapped_column(sa.Text)
     password: Mapped[str] = mapped_column(sa.Text)
-    role_id: Mapped[int] = mapped_column(sa.Integer, sa.ForeignKey(Role.id))
+    # role_id: Mapped[int] = mapped_column(sa.Integer, sa.ForeignKey(Role.id))
 
-    role: Mapped[Role] = relationship("Role")
+    # role: Mapped[Role] = relationship("Role")
 
     def __repr__(self) -> str:
         return f"<User {self.id} {self.first_name} {self.last_name} {self.email}>"

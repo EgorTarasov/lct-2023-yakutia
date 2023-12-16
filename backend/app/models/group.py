@@ -6,6 +6,7 @@ from sqlalchemy.orm import relationship, Mapped, mapped_column
 class VkGroup(Base, TimestampMixin):
     id: Mapped[int] = mapped_column(sa.Integer, primary_key=True)
     name: Mapped[str] = mapped_column(sa.Text)
+    description: Mapped[str] = mapped_column(sa.Text, nullable=True)
     screen_name: Mapped[str] = mapped_column(sa.Text)
     type: Mapped[str] = mapped_column(sa.Text)
     photo_200: Mapped[str] = mapped_column(sa.Text)

@@ -11,13 +11,12 @@ class UserTokenData(NamedTuple):
     """Данные которые хранятся в jwt токене пользователя
     user_id: int
     email: str
-    role_id: int
+
     exp: dt.datetime
     """
 
     user_id: int
-    email: str
-    role_id: int
+
     exp: dt.datetime
 
 

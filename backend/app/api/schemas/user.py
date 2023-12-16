@@ -28,7 +28,7 @@ class UserCreate(BaseModel):
     last_name: str = Field(..., examples=["Ivanov"])
     email: str = Field(..., examples=["test@test.com"])
     password: str = Field(..., examples=["Test123456"])
-    role_id: UserRoles = Field(...)
+    # role_id: UserRoles = Field(...)
 
 
 class UserDto(BaseModel):
