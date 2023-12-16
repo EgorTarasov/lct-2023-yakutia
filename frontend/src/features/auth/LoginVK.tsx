@@ -20,10 +20,9 @@ export const VKButton: React.FC = () => {
     useEffect(() => {
         const queryObj = queryString.parse(location.search);
 
-        if (queryObj) {
-            fetch(`http://localhost:8000/auth/vk`, {
+        if (queryObj.code !== undefined) {
+            fetch(`http://localhost:8000/api/auth/vk?code=${queryObj.code}`, {
                 method: "POST",
-                body: JSON.stringify({ code: queryObj.code }),
             });
             //     navigate("/profile");
         }

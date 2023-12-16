@@ -6,9 +6,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import APIRouter, Depends, status, HTTPException
 
 
-from ...models import User
+from ...models import User, VkUser, VkGroup
 
-from ..schemas import UserDto
+from ..schemas import UserDto, VkUserInfo
 from ...services.jwt import UserTokenData
 from ..middlewares import get_current_user, get_session
 
@@ -34,3 +34,6 @@ async def get_user(
         )
     logging.info(f"/me User<id={db_user.id}>")
     return UserDto.model_validate(db_user)
+
+
+

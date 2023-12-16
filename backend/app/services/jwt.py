@@ -41,14 +41,10 @@ class JWTEncoder:
     @staticmethod
     def create_access_token(
         user_id: int,
-        email: str,
-        role_id: int,
         expires_delta: dt.timedelta = dt.timedelta(days=1),
     ) -> str:
         to_encode = {
             "user_id": user_id,
-            "email": email,
-            "role_id": role_id,
             "exp": dt.datetime.utcnow() + expires_delta,
         }
         return jwt.encode(to_encode, jwt_secret_key, algorithm=jwt_hash_algorithm)
