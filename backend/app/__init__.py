@@ -15,7 +15,7 @@ def create_app() -> FastAPI:
 
     # db = Database(settings)
     app = FastAPI(
-        title="Misis Banach Space go Algo",
+        title="IFoundMisis",
         version="0.0.1",
         description="Rest api for frontend Application",
         docs_url=f"{settings.api_prefix}/docs",
