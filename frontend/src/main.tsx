@@ -1,18 +1,24 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './global.css'
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import './fonts/GothamPro/fonts.css'
+import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { PrivateRoute } from './hoc/PrivateRoute';
 import { Login } from './features/auth/Login';
 import { Provider } from 'react-redux';
-import { store } from './app/store';
+import { persistor, store } from './app/store';
+import { PersistGate } from 'redux-persist/integration/react';
 import { PageLayout } from './layout/PageLayout';
-
+import { Dashboard } from './app/pages/Dashboard.';
+import { Profile } from './app/pages/Profile';
+import Occupation from './app/pages/Occupation';
+import { Admin } from './app/pages/Admin';
+import { AdminPageLayout } from './layout/AdminPageLayout';
+import { Graphs } from './app/pages/Graphs';
 
 const router = createBrowserRouter([
   {
     path: '/login',
-    element: <Login />,
+    element: <PageLayout><Login /></PageLayout>,
   },
   {
     path: '*',
@@ -20,21 +26,36 @@ const router = createBrowserRouter([
     children: [
       {
         path: 'dashboard',
-        element: <div>DONE</div>,
+        element: <PageLayout><Dashboard /></PageLayout>,
       },
+      {
+        path: 'profile',
+        element: <PageLayout><Profile /></PageLayout>,
+      },
+      {
+        path: 'admin',
+        element: <AdminPageLayout><Admin /></AdminPageLayout>,
+      },
+      {
+        path: 'graph',
+        element: <AdminPageLayout><Graphs /></AdminPageLayout>
+      },
+      {
+        path: '*',
+        element: <Navigate to="/dashboard" />,
+      },
+      {
+        path: 'occupation/:id',
+        element: <PageLayout><Occupation /></PageLayout>
+      }
     ],
   },
-  {
-    path: 'dashboard',
-  }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <PageLayout>
-        <RouterProvider router={router} />
-      </PageLayout>
-    </Provider>
-  </React.StrictMode>,
+  <Provider store={store}>
+    <PersistGate persistor={persistor}>
+      <RouterProvider router={router} />
+    </PersistGate>
+  </Provider>
 )

@@ -5,7 +5,7 @@ export function PrivateRoute() {
     const auth = useAuth()
     const location = useLocation()
 
-    return auth.user ? (
+    return auth.isAuth ? (
         <Outlet />
     ) : (
         <Navigate to="/login" state={{ from: location }} />

@@ -4,7 +4,6 @@ type TextInputProps = {
   name: string;
   label: string;
   validate?: (value: string) => string | undefined;
-  placeholder: string;
   type?: "text" | "email" | "password" | "number";
 };
 
@@ -17,22 +16,21 @@ type SelectInputProps = {
 
 export const TextInput = ({
   name,
-  placeholder,
   label,
   type = "text",
 }: TextInputProps) => (
-  <div className="flex flex-col text-left">
-    <label htmlFor="name" className="font-semibold ml-4 text-label text-primary-500">{label}</label>
+  <div className="flex flex-col text-left w-full">
+    <label htmlFor="name" className="ml-4 text-caption font-semibold text-primary-900">{label}</label>
     <Field
-      placeholder={placeholder}
       type={type}
       id={name}
       name={name}
-      className="w-full px-3 py-2 border border-primary-900 rounded-input focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+      className="flex justify-center items-center w-full px-5 py-2 border border-primary-900 rounded-input focus:outline-none focus:ring-blue-500 focus:border-blue-500"
     />
-    <ErrorMessage name={name} component="div" className="text-red-500" />
+    <ErrorMessage name={name} component="div" className="text-red-500 mt-1 ml-4" />
   </div>
 );
+
 
 export const SelectInput = ({
   name,
