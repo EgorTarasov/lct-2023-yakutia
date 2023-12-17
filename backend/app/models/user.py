@@ -1,3 +1,4 @@
+import datetime as dt
 import sqlalchemy as sa
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -33,6 +34,10 @@ class VkUser(Base, TimestampMixin):
 
     first_name: Mapped[str] = mapped_column(sa.Text)
     last_name: Mapped[str] = mapped_column(sa.Text)
+    bdate: Mapped[dt.datetime] = mapped_column(sa.DateTime)
+    sex: Mapped[str] = mapped_column(sa.Text)
+    city: Mapped[str] = mapped_column(sa.Text)
+
     photo_url: Mapped[str] = mapped_column(sa.Text)
     groups: Mapped[list[VkGroup]] = relationship(
         "VkGroup", secondary=user_group_association, backref="users"

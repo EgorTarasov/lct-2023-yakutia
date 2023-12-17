@@ -44,6 +44,7 @@ async def add_profession(
     user: UserTokenData = Depends(get_current_user),
     db: AsyncSession = Depends(get_session),
 ) -> ProfessionDto:
+    # FIXME: pydantic validation
     prof_stmt = (
         sa.select(Profession)
         .options(orm.selectinload(Profession.descriptions))
@@ -76,6 +77,7 @@ async def add_profession(
     db_emedding = ProfessionEmbedding(id=db_profession.id, embeddings=embedding)
     db.add(db_emedding)
     await db.commit()
+    await db.refresh(db_profession, ["id", "courses", "descriptions"])
     return ProfessionDto.model_validate(db_profession)
 
 
@@ -115,8 +117,9 @@ async def update_profession(
         profession_id=id,
     )
     db_profession.descriptions.append(db_description)
+    db_profession.courses = []
     await db.commit()
-
+    await db.refresh(db_profession, ["id", "courses", "descriptions"])
     return ProfessionDto.model_validate(db_profession)
 
 

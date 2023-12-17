@@ -9,7 +9,7 @@ from fastapi import APIRouter, Depends, status, HTTPException
 
 from ...models import User, VkUser, VkGroup, Profession, ProfessionDescription
 
-from ..schemas import UserDto, ProfessionDto
+from ..schemas import UserDto, ProfessionDto, VkUserDto
 from ...services.jwt import UserTokenData
 from ..middlewares import get_current_user, get_session
 from ...initializers import sbert, tokenizer
@@ -35,8 +35,8 @@ async def get_user(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="User not found",
         )
-    logging.info(f"/me User<id={db_user.id}>")
-    return UserDto.model_validate(db_user)
+    logging.info(f"/me VkUserDto<id={db_user.id}>")
+    return VkUserDto.model_validate(db_user)
 
 
 @router.get("/pred")

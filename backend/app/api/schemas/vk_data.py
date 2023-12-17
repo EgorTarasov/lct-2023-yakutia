@@ -1,3 +1,4 @@
+import datetime as dt
 from pydantic import BaseModel
 
 
@@ -14,3 +15,14 @@ class VkGroupInfo(BaseModel):
 class VkUserInfo(BaseModel):
     user_id: int
     groups: list[VkGroupInfo]
+
+
+class VkUserDto(BaseModel):
+    id: int
+    first_name: str
+    last_name: str
+    bdate: dt.datetime
+    sex: str
+    city: str
+
+    photo_url: list[VkGroupInfo]
