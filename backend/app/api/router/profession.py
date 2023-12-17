@@ -16,7 +16,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import APIRouter, Depends, status, HTTPException
 
 
-from ...models import User, VkUser, VkGroup, Profession, ProfessionDescription
+from ...models import (
+    User,
+    VkUser,
+    VkGroup,
+    Profession,
+    ProfessionDescription,
+    ProfessionEmbedding,
+)
 
 from ..schemas import (
     ProfessionCreate,
@@ -25,6 +32,8 @@ from ..schemas import (
     ProfessionDescriptionDto,
 )
 from ...services.jwt import UserTokenData
+from ...services.ml.vectorizer import vectorize
+from ...initializers import tokenizer, sbert
 from ..middlewares import get_current_user, get_session
 
 router: tp.Final[APIRouter] = APIRouter(prefix="/profession")
@@ -50,6 +59,7 @@ async def add_profession(
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT, detail="Profession already exists"
         )
+
     db_profession = Profession(name=payload.name)
     if payload.description is not None and payload.source is not None:
         db_description = ProfessionDescription(
@@ -60,6 +70,12 @@ async def add_profession(
 
     db.add(db_profession)
     await db.commit()
+    await db.refresh(db_profession)
+
+    embedding = vectorize(tokenizer, sbert, payload.description)
+    result = [tensor.item() for tensor in embedding]
+    db_emedding = ProfessionEmbedding(id=db_profession.id, embeddings=result)
+
     return ProfessionDto.model_validate(db_profession)
 
 

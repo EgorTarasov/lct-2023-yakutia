@@ -34,7 +34,7 @@ class VkUser(Base, TimestampMixin):
     first_name: Mapped[str] = mapped_column(sa.Text)
     last_name: Mapped[str] = mapped_column(sa.Text)
     photo_url: Mapped[str] = mapped_column(sa.Text)
-    groups: Mapped[VkGroup] = relationship(
+    groups: Mapped[list[VkGroup]] = relationship(
         "VkGroup", secondary=user_group_association, backref="users"
     )
 
