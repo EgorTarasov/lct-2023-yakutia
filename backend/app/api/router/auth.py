@@ -108,7 +108,9 @@ async def auth_vk(
     response = await client.get(url)
 
     if response.status_code != 200:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail=response.json()
+        )
 
     access_token = response.json()["access_token"]
     user_id = response.json()["user_id"]
