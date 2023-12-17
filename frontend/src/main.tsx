@@ -1,7 +1,11 @@
 import ReactDOM from "react-dom/client";
 import "./global.css";
 import "./fonts/GothamPro/fonts.css";
-import { Navigate, RouterProvider, createHashRouter } from "react-router-dom";
+import {
+    Navigate,
+    RouterProvider,
+    createBrowserRouter,
+} from "react-router-dom";
 import { PrivateRoute } from "./hoc/PrivateRoute";
 import { Login } from "./features/auth/Login";
 import { Provider } from "react-redux";
@@ -15,7 +19,7 @@ import { Admin } from "./app/pages/Admin";
 import { AdminPageLayout } from "./layout/AdminPageLayout";
 import { Graphs } from "./app/pages/Graphs";
 
-const router = createHashRouter([
+const router = createBrowserRouter([
     {
         path: "/",
         element: (
