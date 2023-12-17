@@ -128,6 +128,8 @@ async def auth_vk(
             params={"fields": "photo_200, sex, city, bdate, schools", "v": "5.199"},
         )
 
+        logging.info(f"{response.json()}")
+
         user_info: dict[str, tp.Any] = response.json()["response"][0]
 
         if "bdate" in user_info.keys():
