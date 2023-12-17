@@ -1,5 +1,5 @@
 import logging
-from os import access
+import datetime as dt
 import typing as tp
 import httpx
 
@@ -125,16 +125,48 @@ async def auth_vk(
         response = await client.get(
             settings.vk_base_url + "/users.get",
             headers={"Authorization": f"Bearer {access_token}"},
-            params={"fields": "photo_200", "v": "5.199"},
+            params={"fields": "photo_200, sex, city, bdate, schools", "v": "5.199"},
         )
 
-        user_info = response.json()["response"][0]
+        user_info: dict[str, tp.Any] = response.json()["response"][0]
+
+        if "bdate" in user_info.keys():
+            d, m, y = map(int, user_info["bdate"].split("."))  # 10.6.2003
+            bdate = dt.datetime(y, m, d)
+        else:
+            bdate = dt.datetime(2000, 1, 1)
+
+        if "city" in user_info.keys():
+            city = user_info["city"]["title"]
+        else:
+            city = "Не указан"
+
+        if "sex" in user_info.keys():
+            """
+            •
+                1 — женский;
+                •
+                2 — мужской;
+                •
+                0 — пол не указан.
+            """
+            if user_info["sex"] == 1:
+                sex = "женский"
+            elif user_info["sex"] == 2:
+                sex = "мужской"
+            else:
+                sex = "пол не указан"
+        else:
+            sex = "пол не указан"
 
         db_vk_user = VkUser(
             id=user_info["id"],
             first_name=user_info["first_name"],
             last_name=user_info["last_name"],
             photo_url=user_info["photo_200"],
+            bdate=bdate,
+            city=city,
+            sex=sex,
         )
         db.add(db_vk_user)
         await db.commit()

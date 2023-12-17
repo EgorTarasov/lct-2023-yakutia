@@ -2,24 +2,34 @@ import httpx
 import sqlalchemy as sa
 import sqlalchemy.orm as orm
 from sqlalchemy.ext.asyncio import AsyncSession
+
+
 from ..models import VkUser, VkGroup
-from ..initializers import settings
+from ..initializers import settings, tokenizer, sbert
+from ..services.ml.vectorizer import vectorize
 
 
 async def update_groups(
     db: AsyncSession, client: httpx.AsyncClient, user: VkUser, token: str
 ):
-
     response = await client.get(
         settings.vk_base_url + "/groups.get",
         headers={"Authorization": f"Bearer {token}"},
         params={"v": "5.199"},
     )
-    # FIXME: check response status code
 
     groups_stmt = sa.select(VkGroup).where(
         VkGroup.id.in_(response.json()["response"]["items"])
     )
+    user_stmt = (
+        sa.select(VkUser)
+        .options(orm.selectinload(VkUser.groups))
+        .where(VkUser.id == user.id)
+    )
+    db_user: VkUser | None = (await db.execute(user_stmt)).unique().scalar()
+
+    if db_user is None:
+        return
     db_groups: list[VkGroup] = [obj[0] for obj in (await db.execute(groups_stmt)).all()]
 
     response = await client.get(
@@ -41,16 +51,24 @@ async def update_groups(
             (group for group in db_groups if group.id == group_info["id"]), None
         )
         if db_group is None:
-            new_groups.append(
-                VkGroup(
-                    id=group_info["id"],
-                    name=group_info["name"],
-                    description=group_info["description"],
-                    screen_name=group_info["screen_name"],
-                    type=group_info["type"],
-                    photo_200=group_info["photo_200"],
-                )
+            group = VkGroup(
+                id=group_info["id"],
+                name=group_info["name"],
+                description=group_info["description"]
+                if "description" in group_info.keys()
+                else "",
+                screen_name=group_info["screen_name"],
+                type=group_info["type"],
+                photo_200=group_info["photo_200"],
+                embeddings=vectorize(
+                    tokenizer,
+                    sbert,
+                    group_info["description"]
+                    if "description" in group_info.keys()
+                    else "",
+                ),
             )
+            new_groups.append(group)
         else:
             db_group.name = group_info["name"]
             db_group.description = group_info["description"]
@@ -62,4 +80,5 @@ async def update_groups(
     db.add_all(new_groups)
     user.groups = user_groups + new_groups  # type: ignore
     await db.commit()
+
     await client.aclose()
