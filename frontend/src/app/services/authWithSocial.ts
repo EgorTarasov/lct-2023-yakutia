@@ -1,4 +1,5 @@
 import axios from "axios";
+import { env } from "../../env";
 
 export type VkLoginRequest = {
     code: string;
@@ -10,10 +11,12 @@ export type VkLoginResponse = {
 };
 
 class VkService {
+
+
     static async loginVk(code: VkLoginRequest): Promise<VkLoginResponse> {
         try {
             const response = await axios.post<VkLoginResponse>(
-                `http://localhost:8000/api/auth/vk?code=${code}`,
+                `${env.BACK_API_URL}/auth/vk?code=${code}`,
             );
             console.log(response.data);
             return response.data;
