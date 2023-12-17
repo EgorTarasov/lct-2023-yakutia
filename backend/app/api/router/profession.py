@@ -13,22 +13,20 @@ import sqlalchemy as sa
 import sqlalchemy.orm as orm
 import logging
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi import APIRouter, Depends, status, HTTPException
+from fastapi import APIRouter, Depends, status, HTTPException, BackgroundTasks
 
 
 from ...models import (
     Profession,
     ProfessionDescription,
     ProfessionEmbedding,
+    ProfessionVisit,
 )
 
 from ..schemas import (
     ProfessionCreate,
     ProfessionDto,
     ProfessionDescriptionCreate,
-    ProfessionDescriptionDto,
-    ExternalCourseDto,
-    ExternalCourseDto,
 )
 from ...services.jwt import UserTokenData
 from ...services.ml.vectorizer import vectorize
@@ -132,11 +130,12 @@ async def get_all_professions(
         orm.selectinload(Profession.courses),
         orm.selectinload(Profession.descriptions),
     )
-
-    return [
+    res = [
         ProfessionDto.model_validate(obj)
         for obj in (await db.execute(prof_stmt)).scalars().all()
     ]
+    res.sort(key=lambda x: len(x.courses), reverse=True)
+    return res
 
 
 @router.get("/i/{id}")
@@ -152,6 +151,9 @@ async def get_profession_by_id(
         .where(Profession.id == id)
     )
 
+    # check if user has ProfessionVisit record for this profession
+    # if not, create one
+
     db_profession: Profession | None = (
         await db.execute(prof_stmt)
     ).scalar_one_or_none()
@@ -160,5 +162,19 @@ async def get_profession_by_id(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Profession not found"
         )
+
+    visit_stmt = (
+        sa.select(ProfessionVisit)
+        .where(ProfessionVisit.profession_id == id)
+        .where(ProfessionVisit.user_id == user.user_id)
+    )
+    db_visit: ProfessionVisit | None = (
+        await db.execute(visit_stmt)
+    ).scalar_one_or_none()
+
+    if db_visit is None:
+        db_visit = ProfessionVisit(profession_id=id, user_id=user.user_id)
+        db.add(db_visit)
+        await db.commit()
 
     return ProfessionDto.model_validate(db_profession)
