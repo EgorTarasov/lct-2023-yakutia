@@ -19,7 +19,7 @@ def mean_pooling(model_output, attention_mask):
 
 
 def vectorize(text: str) -> List[float]:
-    encoded_input = tokenizer(text, padding=True, truncation=True, max_length=24, return_tensors='pt')
+    encoded_input = tokenizer(text, padding=True, truncation=True, max_length=64, return_tensors='pt')
     with torch.no_grad():
         model_output = sbert(**encoded_input)
     sentence_embeddings = mean_pooling(model_output, encoded_input['attention_mask'])
