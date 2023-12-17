@@ -6,7 +6,7 @@ from vectorizer import vectorize
 
 def get_classes(path_to_csv: str,
                 professions: list[dict[str, str | int]],
-                threshold: float = 0.5):
+                threshold: float = 0.55):
     df = pd.read_csv(path_to_csv, on_bad_lines='skip', delimiter=";")
     df["text"] = df.apply(lambda x: x["name"] + ". " + x["portfolioText"] if type(x["portfolioText"]) != float else x["name"], axis=1)
     result = []
