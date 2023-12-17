@@ -1,15 +1,16 @@
 import json
 from typing import List, Dict
+import torch
 
-from vectorizer import vectorize
 from similarity_counter import get_score
 from labels2embeds import get_labels_embeds
 
-def get_predict(group_scores: List[Dict[str, float]],
-                threshold: float = 0.5) -> List[str]:
+
+def get_predict(group_scores,
+                threshold: float = 0.6):
     pred_dict = {}
     for group_pred in group_scores:
-        for name, similarity in group_pred.values():
+        for name, similarity in group_pred.items():
             if name not in pred_dict:
                 pred_dict[name] = 0
             if similarity > threshold:
@@ -19,27 +20,18 @@ def get_predict(group_scores: List[Dict[str, float]],
 
 
 def inference(request: Dict[str, str | List[float]],
-              classes: List[Dict[str, str | int]]):
-    
+              classes: List[Dict[str, str | int]]) -> List[str]:
+
     labels_embeddings = get_labels_embeds(classes)
     groups_list = list(request.keys())
 
     user_scores = []
     ml_response = {}
     for group_name in groups_list:
-        group_info = request[group_name]
-        if "predict" in group_info:
-            user_scores.append(group_info["predict"])
-        else:
-            group_text = request[group_name]["desctription"]
-            group_embedding = vectorize(group_text)
-            group_score = get_score(group_embedding, labels_embeddings)
-            user_scores.append(group_score)
-            ml_response[group_name] = {"desctription": group_text,
-                                       "predict":group_score} 
+        group_text = request[group_name]["description"]
+        group_embedding = torch.Tensor([request[group_name]["embeddings"]])
+        group_score = get_score(group_embedding, labels_embeddings)
+        user_scores.append(group_score)
 
-    pred = get_predict(user_scores) # сделать
-
-    return pred, ml_response
-    
-
+    pred = get_predict(user_scores)
+    return pred

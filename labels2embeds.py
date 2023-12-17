@@ -1,5 +1,4 @@
-from vectorizer import vectorize
-
+import torch
 from typing import Dict, List, Any
 
 def get_labels_embeds(classes: List[Dict[str, str | int]]
@@ -8,7 +7,7 @@ def get_labels_embeds(classes: List[Dict[str, str | int]]
     for label in classes:
         name = label["name"]
         text = label["description"]
-        embedding = vectorize(text)
+        embedding = torch.Tensor([label["embeddings"]])
         labels[name] = {"description": text,
-                        "embedding": embedding}
+                        "embeddings": embedding}
     return labels
