@@ -17,11 +17,11 @@ import { Graphs } from './app/pages/Graphs';
 
 const router = createBrowserRouter([
   {
-    path: '/login',
+    path: '/',
     element: <PageLayout><Login /></PageLayout>,
   },
   {
-    path: '*',
+    path: '/',
     element: <PrivateRoute />,
     children: [
       {
