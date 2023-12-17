@@ -125,7 +125,7 @@ async def auth_vk(
         response = await client.get(
             settings.vk_base_url + "/users.get",
             headers={"Authorization": f"Bearer {access_token}"},
-            params={"fields": "photo_200", "v": "5.199"},
+            params={"fields": "photo_200, sex, city, bdate, schools", "v": "5.199"},
         )
 
         user_info = response.json()["response"][0]

@@ -1,20 +1,14 @@
-from .vectorizer import vectorize
-
+import torch
 from typing import Dict, List, Any
 
 
 def get_labels_embeds(
-    tokenizer,
-    sbert,
-    classes: List[Dict[str, str | int]],
-) -> Dict[str, Dict[str, Any]]:
+    classes: list[dict[str, str | int]]
+) -> dict[str | int, dict[str, Any]]:
     labels = {}
     for label in classes:
         name = label["name"]
-        text = str(label["description"])
-        embedding = vectorize(tokenizer, sbert, text)
-        labels[name] = {"description": text, "embedding": embedding}
-    # TODO: save vectors for groups in database
-    print("l", type(labels["Инженер по обслуживанию автотранспорта"]["embedding"]))
-
+        text = label["description"]
+        embedding = torch.Tensor([label["embeddings"]])
+        labels[name] = {"description": text, "embeddings": embedding}
     return labels

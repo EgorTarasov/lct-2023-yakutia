@@ -1,4 +1,5 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
+from .course import ExternalCourseDto
 
 
 class ProfessionDescriptionCreate(BaseModel):
@@ -27,6 +28,7 @@ class ProfessionDto(BaseModel):
     id: int
     name: str
     descriptions: list[ProfessionDescriptionDto] = []
+    courses: list[ExternalCourseDto | None] = Field(default_factory=list)
 
     model_config = ConfigDict(
         from_attributes=True,

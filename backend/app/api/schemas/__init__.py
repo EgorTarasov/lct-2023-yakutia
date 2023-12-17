@@ -7,6 +7,7 @@ from .profession import (
     ProfessionDto,
     ProfessionCreate,
 )
+from .course import ExternalCourseDto, ExternalCourseCreate, ExternalCourseDto
 
 
 __all__ = [
@@ -21,4 +22,7 @@ __all__ = [
     "ProfessionDescriptionDto",
     "ProfessionDto",
     "ProfessionCreate",
+    "ExternalCourseDto",
+    "ExternalCourseCreate",
+    "ExternalCourseDto",
 ]

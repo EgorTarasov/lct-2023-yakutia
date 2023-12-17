@@ -1,5 +1,6 @@
 from .base import Base, TimestampMixin
 from .group import VkGroup
+from .course import ExternalCourse, profession_course_association
 import sqlalchemy as sa
 from sqlalchemy.dialects.postgresql import ARRAY, REAL
 from sqlalchemy.orm import relationship, Mapped, mapped_column
@@ -35,6 +36,11 @@ class Profession(Base, TimestampMixin):
         "VkGroup", secondary="group_profession_association"
     )
     embeddings: Mapped[ProfessionEmbedding] = relationship("ProfessionEmbedding")
+    courses: Mapped[list[ExternalCourse]] = relationship(
+        "ExternalCourse",
+        secondary="profession_course_association",
+        secondaryjoin="ExternalCourse.id == profession_course_association.c.external_course_id",
+    )
 
     def __repr__(self) -> str:
         return f"<Profession(id={self.id}, name={self.name})>"

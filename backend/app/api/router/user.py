@@ -9,7 +9,7 @@ from fastapi import APIRouter, Depends, status, HTTPException
 
 from ...models import User, VkUser, VkGroup, Profession, ProfessionDescription
 
-from ..schemas import UserDto, VkUserInfo
+from ..schemas import UserDto, ProfessionDto
 from ...services.jwt import UserTokenData
 from ..middlewares import get_current_user, get_session
 from ...initializers import sbert, tokenizer
@@ -77,19 +77,39 @@ async def get_profesions(
         orm.selectinload(Profession.embeddings),
     )
 
-    db_professions = [
+    db_professions: list[Profession] = [
+        obj for obj in (await db.execute(prof_stmt)).scalars().all()
+    ]
+
+    professions = [
         {
             "id": obj.id,
             "name": obj.name,
             "description": obj.descriptions[0].description,
-            "embeddings": obj.embeddings[0].embeddings,
+            "embeddings": obj.embeddings[0].embeddings,  # type: ignore
         }
-        for obj in (await db.execute(prof_stmt)).scalars().all()
+        for obj in db_professions
     ]
     with open("test_prof.json", "w") as f:
-        json.dump(db_professions, f, indent=4, ensure_ascii=False)
+        json.dump(professions, f, indent=4, ensure_ascii=False)
     with open("test_groups.json", "w") as f:
         json.dump(user_groups, f, indent=4, ensure_ascii=False)
 
-    # a = run.inference(user_groups, db_professions)
-    return {"test": "ok"}
+    result = run.inference(user_groups, professions)[:5]  # type: ignore
+
+    # find all professions with name in result in db_professions
+    # and return them
+    recomendations_stmt = (
+        sa.select(Profession)
+        .options(
+            orm.selectinload(Profession.courses),
+            orm.selectinload(Profession.descriptions),
+        )
+        .where(Profession.name.in_(result))
+    )
+
+    db_professions = [
+        obj for obj in (await db.execute(recomendations_stmt)).scalars().all()
+    ]
+
+    return [ProfessionDto.model_validate(obj) for obj in db_professions]
