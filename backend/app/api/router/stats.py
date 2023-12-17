@@ -46,7 +46,7 @@ async def get_sex_data(
 
     results = (await db.execute(stmt)).all()
 
-    return {key: value for key, value in results}
+    return [{"sex": key, "cnt": value} for key, value in results]
 
 
 @router.get("/age")
@@ -62,4 +62,11 @@ async def get_age_group(
 
     results = (await db.execute(stmt)).all()
 
-    return {key: value for key, value in results}
+    return [
+        {
+            "age": age,
+            "cnt": cnt,
+        }
+        for age, cnt in results
+    ]
+    # return {"age": key,key: value for key, value in results}
