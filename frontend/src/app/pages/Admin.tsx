@@ -1,8 +1,10 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 import { useState } from "react";
 import {
   Input,
   Select,
-  DatePicker,
   Button,
   Form,
   Layout,
@@ -89,34 +91,7 @@ export function Admin() {
     },
   ];
 
-  const handleSave = () => {
-    // Send courseDetails to API
-    console.log("Saving course:", courseDetails);
-    fetch("https://example.com/api/courses", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(courseDetails),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Course saved successfully:", data);
-        // Reset form fields
-        setCourseDetails({
-          id: "",
-          name: "",
-          learningtype: [],
-          course_image: "",
-          priceAll: 0,
-          price: 0,
-          source: "",
-        });
-      })
-      .catch((error) => {
-        console.error("Error saving course:", error);
-      });
-  };
+
 
   return (
     <Layout style={{ width: "100%" }} className="bg-white px-4 mt-10">

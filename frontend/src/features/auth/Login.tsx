@@ -57,7 +57,7 @@ export const Login = () => {
             handleVKlogin(queryCode);
         }
         if (isError) window.location.href = cbLink;
-    },);
+    }, []);
 
     const handleVKlogin = async (code: VkLoginRequest) => {
         try {
