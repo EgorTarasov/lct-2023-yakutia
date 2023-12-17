@@ -5,6 +5,8 @@ export function PrivateRoute() {
     const auth = useAuth()
     const location = useLocation()
 
+    console.log(auth.isAuth)
+
     return auth.isAuth ? (
         <Outlet />
     ) : (
