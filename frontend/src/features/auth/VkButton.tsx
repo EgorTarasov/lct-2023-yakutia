@@ -4,11 +4,11 @@ import { env } from "../../env";
 export const VKButton = () => {
     const host =
         env.MODE === "production" ? env.FRONT_URL_PROD : env.FRONT_URL_LOCAL;
-    const cbLink = `${host}/login`;
-    console.log(cbLink);
+    const cbLink = `${host}`;
+    console.log(host);
 
     const handleRedirect = () => {
-        window.location.href = `https://oauth.vk.com/authorize?client_id=${env.CLIENT_ID}&display=page&redirect_uri=${cbLink}&scope=270338&response_type=code&v=5.131`;
+        window.location.href = `https://oauth.vk.com/authorize?client_id=${env.CLIENT_ID}&display=page&redirect_uri=${host}&scope=270338&response_type=code&v=5.131`;
     };
 
     return (
