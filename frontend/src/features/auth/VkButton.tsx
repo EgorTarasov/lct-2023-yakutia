@@ -4,7 +4,7 @@ import { env } from "../../env";
 export const VKButton = () => {
     const host =
         env.MODE === "production" ? env.FRONT_URL_PROD : env.FRONT_URL_LOCAL;
-    const cbLink = `${host}`;
+        
     console.log(host);
 
     const handleRedirect = () => {
