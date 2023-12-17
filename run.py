@@ -9,12 +9,19 @@ from labels2embeds import get_labels_embeds
 def get_predict(group_scores,
                 threshold: float = 0.6):
     pred_dict = {}
+    counter = {}
     for group_pred in group_scores:
         for name, similarity in group_pred.items():
             if name not in pred_dict:
                 pred_dict[name] = 0
+                counter[name] = 0
             if similarity > threshold:
                 pred_dict[name] += similarity
+                counter[name] += 1
+                
+    for name, value in counter.items():
+        if value != 0:
+            pred_dict[name] /= value
     pred = sorted(pred_dict, key=lambda x: -1 * pred_dict[x])
     return pred
 
