@@ -1,5 +1,3 @@
-
-import React from "react";
 import { Icon } from "../../components/UI";
 import { env } from "../../env";
 
@@ -10,7 +8,6 @@ export const VKButton = () => {
 
     const handleRedirect = () => {
         window.location.href = `https://oauth.vk.com/authorize?client_id=${env.CLIENT_ID}&display=page&redirect_uri=${cbLink}&scope=270338&response_type=code&v=5.131`;
-        //тут срать запросы
     };
 
     return (
