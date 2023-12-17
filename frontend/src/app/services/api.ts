@@ -58,6 +58,7 @@ export const api = createApi({
     getPredictions: builder.query<{ message: string }, void>({
       query: () => 'user/pred',
     }),
+    
     getMe: builder.query<{ message: string }, void>({
       query: () => 'user/me',
     }),
@@ -69,9 +70,22 @@ export const api = createApi({
       query: () => 'profession/all',
     }),
 
-    
+    getProfessionById: builder.query<{ id: number, name: string, descriptions: { description: string }[] }, number>({
+      query: (id) => `profession/i/${id}`,
+    }),
 
+
+    // STATS
+
+    getSexStats: builder.query<{ age: number, cnt: number, sex: string }[], void>({
+      query: () => 'stats/sex',
+    }),
+
+    getAgeStats: builder.query<{ age: number, cnt: number }[], void>({
+      query: () => 'stats/age',
+    }),
+    
   }),
 })
 
-export const { useLoginMutation, useGetProfessionsQuery, useGetMeQuery, useGetPredictionsQuery, useSignUpMutation } = api
+export const { useLoginMutation, useGetProfessionsQuery, useGetMeQuery, useGetPredictionsQuery, useSignUpMutation, useGetProfessionByIdQuery, useGetSexStatsQuery, useGetAgeStatsQuery } = api

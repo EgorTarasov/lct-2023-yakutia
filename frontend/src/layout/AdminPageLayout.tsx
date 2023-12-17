@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button, Layout } from "antd";
-import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
+import { LogoutOutlined, } from "@ant-design/icons";
 import { useAuth } from "../hooks/useAuth";
 import { useAppDispatch } from "../hooks/store";
 import { logout } from "../features/auth/authSlice";
@@ -12,7 +12,7 @@ type LayoutProps = {
   children: React.ReactNode;
 };
 
-export const PageLayout = ({ children }: LayoutProps) => {
+export const AdminPageLayout = ({ children }: LayoutProps) => {
   const auth = useAuth();
   const dispatch = useAppDispatch();
 
@@ -23,23 +23,22 @@ export const PageLayout = ({ children }: LayoutProps) => {
   return (
     <Layout>
       <Header className="bg-white flex justify-between items-center pt-5" >
-        <Link to="/">
+        <Link to="/admin">
           <Icon iconName="logo" />
         </Link>
         {auth.isAuth && (
           <div className="flex gap-5">
-            <Link to="/dashboard" className="flex">
+            <Link to="/admin" className="flex">
               <Button type="default">
                 <div className="flex justify-center gap-3">
-                  <p className="text-caption">Главная</p>
+                  <p className="text-caption">Создать курс</p>
                 </div>
               </Button>
             </Link>
-            <Link to="/profile" className="flex">
+            <Link to="/graph" className="flex">
               <Button type="default">
                 <div className="flex justify-center gap-3">
-                  <UserOutlined />
-                  <p className="text-caption">Профиль</p>
+                  <p className="text-caption">Статистика</p>
                 </div>
               </Button>
             </Link>

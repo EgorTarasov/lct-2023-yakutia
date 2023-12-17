@@ -21,4 +21,5 @@ class VkService {
   }
 }
 
+
 export default VkService;

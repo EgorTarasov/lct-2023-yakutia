@@ -85,7 +85,7 @@ export const Login = () => {
             dispatch(setUserToken(access_token));
             dispatch(setIsAuth());
             console.log(access_token);
-            navigate("/dashboard");
+            navigate("/admin");
         } catch (err) {
             console.log(err, values);
         }

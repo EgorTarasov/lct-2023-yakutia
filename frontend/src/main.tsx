@@ -7,9 +7,13 @@ import { Login } from './features/auth/Login';
 import { Provider } from 'react-redux';
 import { persistor, store } from './app/store';
 import { PersistGate } from 'redux-persist/integration/react';
-import { Dashboard } from './app/pages/Dashboard';
-import { Profile } from './app/pages/Profile';
 import { PageLayout } from './layout/PageLayout';
+import { Dashboard } from './app/pages/Dashboard.';
+import { Profile } from './app/pages/Profile';
+import Occupation from './app/pages/Occupation';
+import { Admin } from './app/pages/Admin';
+import { AdminPageLayout } from './layout/AdminPageLayout';
+import { Graphs } from './app/pages/Graphs';
 
 const router = createBrowserRouter([
   {
@@ -29,8 +33,20 @@ const router = createBrowserRouter([
         element: <PageLayout><Profile /></PageLayout>,
       },
       {
+        path: 'admin',
+        element: <AdminPageLayout><Admin /></AdminPageLayout>,
+      },
+      {
+        path: 'graph',
+        element: <AdminPageLayout><Graphs /></AdminPageLayout>
+      },
+      {
         path: '*',
         element: <Navigate to="/dashboard" />,
+      },
+      {
+        path: 'occupation/:id',
+        element: <PageLayout><Occupation /></PageLayout>
       }
     ],
   },

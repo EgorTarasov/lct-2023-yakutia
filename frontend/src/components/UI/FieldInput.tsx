@@ -20,15 +20,14 @@ export const TextInput = ({
   type = "text",
 }: TextInputProps) => (
   <div className="flex flex-col text-left w-full">
-    <label htmlFor="name" className="ml-4 text-placeholder text-primary-500">{label}</label>
+    <label htmlFor="name" className="ml-4 text-caption font-semibold text-primary-900">{label}</label>
     <Field
-      placeholder={label}
       type={type}
       id={name}
       name={name}
-      className="w-full px-3 py-2 border border-primary-900 rounded-input focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+      className="flex justify-center items-center w-full px-5 py-2 border border-primary-900 rounded-input focus:outline-none focus:ring-blue-500 focus:border-blue-500"
     />
-    <ErrorMessage name={name} component="div" className="text-red-500" />
+    <ErrorMessage name={name} component="div" className="text-red-500 mt-1 ml-4" />
   </div>
 );
 
