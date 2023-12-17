@@ -48,7 +48,6 @@ export const Login = () => {
 
     const host =
         env.MODE === "production" ? env.FRONT_URL_PROD : env.FRONT_URL_LOCAL;
-    const cbLink = `${host}/login`;
 
     useEffect(() => {
         const queryObj = queryString.parse(location.search);
@@ -56,7 +55,7 @@ export const Login = () => {
             const queryCode = queryObj.code?.toString() as unknown as VkLoginRequest;
             handleVKlogin(queryCode);
         }
-        if (isError) window.location.href = cbLink;
+        if (isError) window.location.href = host;
     }, []);
 
     const handleVKlogin = async (code: VkLoginRequest) => {
