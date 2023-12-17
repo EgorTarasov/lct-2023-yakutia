@@ -70,13 +70,20 @@ async def add_profession(
 
     db.add(db_profession)
     await db.commit()
-    await db.refresh(db_profession)
-
+    await db.refresh(db_profession, ["id"])
     embedding = vectorize(tokenizer, sbert, payload.description)
-    result = [tensor.item() for tensor in embedding]
-    db_emedding = ProfessionEmbedding(id=db_profession.id, embeddings=result)
-
-    return ProfessionDto.model_validate(db_profession)
+    print(embedding)
+    db_emedding = ProfessionEmbedding(id=db_profession.id, embeddings=embedding)
+    db.add(db_emedding)
+    await db.commit()
+    return ProfessionDto(
+        id=db_profession.id,
+        name=db_profession.name,
+        descriptions=[
+            ProfessionDescriptionDto.model_validate(obj)
+            for obj in db_profession.descriptions
+        ],
+    )
 
 
 @router.post("/update/{id}")

@@ -2,8 +2,11 @@ import httpx
 import sqlalchemy as sa
 import sqlalchemy.orm as orm
 from sqlalchemy.ext.asyncio import AsyncSession
+
+
 from ..models import VkUser, VkGroup
-from ..initializers import settings
+from ..initializers import settings, tokenizer, sbert
+from ..services.ml.vectorizer import vectorize
 
 
 async def update_groups(
@@ -41,16 +44,16 @@ async def update_groups(
             (group for group in db_groups if group.id == group_info["id"]), None
         )
         if db_group is None:
-            new_groups.append(
-                VkGroup(
-                    id=group_info["id"],
-                    name=group_info["name"],
-                    description=group_info["description"],
-                    screen_name=group_info["screen_name"],
-                    type=group_info["type"],
-                    photo_200=group_info["photo_200"],
-                )
+            group = VkGroup(
+                id=group_info["id"],
+                name=group_info["name"],
+                description=group_info["description"],
+                screen_name=group_info["screen_name"],
+                type=group_info["type"],
+                photo_200=group_info["photo_200"],
+                embeddings=vectorize(tokenizer, sbert, group_info["description"]),
             )
+            new_groups.append(group)
         else:
             db_group.name = group_info["name"]
             db_group.description = group_info["description"]
@@ -62,4 +65,5 @@ async def update_groups(
     db.add_all(new_groups)
     user.groups = user_groups + new_groups  # type: ignore
     await db.commit()
+
     await client.aclose()

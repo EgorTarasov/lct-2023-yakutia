@@ -66,21 +66,23 @@ async def get_profesions(
         )
     logging.info(f"/me User<id={db_user.id}>")
     user_groups = {
-        group.name: {
-            "description": group.description,
-        }
+        group.name: {"description": group.description, "embeddings": group.embeddings}
         for group in db_user.groups
     }
 
     # select all professions from db and assemble class dict
 
-    prof_stmt = sa.select(Profession).options(orm.selectinload(Profession.descriptions))
+    prof_stmt = sa.select(Profession).options(
+        orm.selectinload(Profession.descriptions),
+        orm.selectinload(Profession.embeddings),
+    )
 
-    db_professions: list[dict[str, str | int]] = [
+    db_professions = [
         {
             "id": obj.id,
             "name": obj.name,
             "description": obj.descriptions[0].description,
+            "embeddings": obj.embeddings[0].embeddings,
         }
         for obj in (await db.execute(prof_stmt)).scalars().all()
     ]
@@ -89,5 +91,5 @@ async def get_profesions(
     with open("test_groups.json", "w") as f:
         json.dump(user_groups, f, indent=4, ensure_ascii=False)
 
-    a, b = run.inference(tokenizer, sbert, user_groups, db_professions)
-    return a
+    # a = run.inference(user_groups, db_professions)
+    return {"test": "ok"}

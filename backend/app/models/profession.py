@@ -1,7 +1,7 @@
 from .base import Base, TimestampMixin
 from .group import VkGroup
 import sqlalchemy as sa
-from sqlalchemy.dialects.postgresql import ARRAY, NUMERIC
+from sqlalchemy.dialects.postgresql import ARRAY, REAL
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 
@@ -21,9 +21,7 @@ class ProfessionEmbedding(Base, TimestampMixin):
     id: Mapped[int] = mapped_column(
         sa.Integer, sa.ForeignKey("professions.id"), primary_key=True
     )
-    embeddings: Mapped[list[float]] = mapped_column(
-        ARRAY(NUMERIC(asdecimal=False, precision=53))
-    )
+    embeddings: Mapped[list[float]] = mapped_column(ARRAY(REAL))
 
 
 class Profession(Base, TimestampMixin):

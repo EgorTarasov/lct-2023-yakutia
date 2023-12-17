@@ -28,4 +28,5 @@ def vectorize(tokenizer, sbert, text: str) -> torch.Tensor:
     with torch.no_grad():
         model_output = sbert(**encoded_input)
     sentence_embeddings = mean_pooling(model_output, encoded_input["attention_mask"])
-    return sentence_embeddings
+
+    return sentence_embeddings.tolist()[0]

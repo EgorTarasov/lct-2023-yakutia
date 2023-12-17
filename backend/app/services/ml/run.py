@@ -12,15 +12,13 @@ def get_predict(
 ) -> List[str]:
     # pred_dict = {}
     for group_pred in group_scores:
-        #     for name, similarity in group_pred.values():
-        print(type(group_pred))
-    #         if name not in pred_dict:
-    #             pred_dict[name] = 0
-    #         if similarity > threshold:
-    #             pred_dict[name] += similarity
-    # pred = sorted(pred_dict, key=lambda x: -1 * pred_dict[x])
-    # return pred
-    return ["test"]
+        for name, similarity in group_pred.values():
+            if name not in pred_dict:
+                pred_dict[name] = 0
+            if similarity > threshold:
+                pred_dict[name] += similarity
+    pred = sorted(pred_dict, key=lambda x: -1 * pred_dict[x])
+    return pred
 
 
 def inference(
@@ -29,8 +27,8 @@ def inference(
     request: Dict[str, str | List[float]],
     classes: List[Dict[str, str | int]],
 ):  # -> tuple[List[str], dict[Any, Any]]:
-    # 
-    
+    #
+
     start = time.perf_counter()
     labels_embeddings = get_labels_embeds(tokenizer, sbert, classes)
     logging.info(f"generated labels embeds in: {time.perf_counter() - start}")
