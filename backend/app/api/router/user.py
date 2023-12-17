@@ -23,7 +23,7 @@ router: tp.Final[APIRouter] = APIRouter(prefix="/user")
 async def get_user(
     user: UserTokenData = Depends(get_current_user),
     db: AsyncSession = Depends(get_session),
-):
+) -> VkUserDto:
     stmt = (
         sa.select(VkUser)
         .options(orm.selectinload(VkUser.groups))
@@ -43,7 +43,7 @@ async def get_user(
 async def get_profesions(
     user: UserTokenData = Depends(get_current_user),
     db: AsyncSession = Depends(get_session),
-):
+) -> list[ProfessionDto]:
     # get users group and put it into dict with format:
     # {group_id: {group_name: group_name, description: description}}
 
