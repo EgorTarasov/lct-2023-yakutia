@@ -4,7 +4,7 @@ import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
 import { useAuth } from "../hooks/useAuth";
 import { useAppDispatch } from "../hooks/store";
 import { logout } from "../features/auth/authSlice";
-import { Icon } from "../components/UI";
+import Logo from "../assets/icons/logo.svg";
 
 const { Header, Content } = Layout;
 
@@ -24,7 +24,7 @@ export const PageLayout = ({ children }: LayoutProps) => {
     <Layout>
       <Header className="bg-white flex justify-between items-center pt-5" >
         <Link to="/">
-          <Icon iconName="logo" />
+          <img src={Logo} />
         </Link>
         {auth.isAuth && (
           <div className="flex gap-5">

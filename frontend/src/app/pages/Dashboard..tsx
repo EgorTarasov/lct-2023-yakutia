@@ -9,8 +9,8 @@ import axios from 'axios';
 import { NotificationPlacement } from 'antd/es/notification/interface';
 
 export const Dashboard = (() => {
-  const [recomendationArray, setRecomendationArray] = useState<{ name: string, id: number }[]>([]); // Add type annotation here
   const [api, contextHolder] = notification.useNotification();
+  const [recomendationArray, setRecomendationArray] = useState<{ name: string, id: number }[]>([]); // Add type annotation here
 
   const Context = createContext({ name: '' });
 
