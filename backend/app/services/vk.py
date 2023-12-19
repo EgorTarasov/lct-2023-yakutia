@@ -65,13 +65,17 @@ async def update_groups(
                     sbert,
                     group_info["description"]
                     if "description" in group_info.keys()
+                    else ""
+                    if "description" in group_info.keys()
                     else "",
                 ),
             )
             new_groups.append(group)
         else:
             db_group.name = group_info["name"]
-            db_group.description = group_info["description"]
+            db_group.description = (
+                group_info["description"] if "description" in group_info.keys() else ""
+            )
             db_group.screen_name = group_info["screen_name"]
             db_group.type = group_info["type"]
 
