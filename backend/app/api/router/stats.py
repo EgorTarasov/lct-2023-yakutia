@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import APIRouter, Depends, status, HTTPException
 
 
-from ...models import VkUser
+from ...models import VkUser, Profession, ProfessionVisit
 
 from ..schemas import VkUserDto
 from ...services.jwt import UserTokenData
@@ -58,7 +58,7 @@ async def get_age_group(
     birth_year = sa.extract("year", VkUser.bdate)
     age = current_year - birth_year
 
-    stmt = sa.select(age, sa.func.count(VkUser.id)).group_by(age)
+    stmt = sa.select(age, sa.func.count(VkUser.id)).group_by(age).order_by(age)
 
     results = (await db.execute(stmt)).all()
 
@@ -69,4 +69,27 @@ async def get_age_group(
         }
         for age, cnt in results
     ]
-    # return {"age": key,key: value for key, value in results}
+
+
+@router.get("/professions")
+async def get_professions_stats(
+    user: UserTokenData = Depends(get_current_user),
+    db: AsyncSession = Depends(get_session),
+):
+    """
+        select pv.profession_id, p.name  ,count(pv.profession_id)
+    from profession_visits pv
+    join professions p
+    on pv.profession_id  = p.id
+    group by pv.profession_id, p.name
+    order by count(profession_id) desc;
+    """
+    stmt = sa.select(ProfessionVisit.profession_id, Profession.name)
+    #       {
+    #     "value": 11.739204307083542,
+    #     "text": "水是",
+    #     "name": "泰利斯"
+    #   },
+    results = (await db.execute(stmt)).all()
+    print(results)
+    return [{"value": value, "text": name, "name": name} for value, name in results]
