@@ -7,7 +7,24 @@ export type User = {
   username: string
   email: string
   password: string
+}
 
+export type VkUser = {
+  id: number
+  first_name: string
+  last_name: string
+  bdate: string
+  sex: string
+  city: string
+  photo_url: {
+    id: number
+    name: string
+    screen_name: string
+    type: string
+    photo_50: string
+    photo_100: string
+    photo_200: string
+  }[]
 }
 
 export interface UserResponse {
@@ -59,7 +76,7 @@ export const api = createApi({
       query: () => 'user/pred',
     }),
     
-    getMe: builder.query<{ message: string }, void>({
+    getMe: builder.query<VkUser, void>({
       query: () => 'user/me',
     }),
 
@@ -84,8 +101,13 @@ export const api = createApi({
     getAgeStats: builder.query<{ age: number, cnt: number }[], void>({
       query: () => 'stats/age',
     }),
+
+    getProfessionsStats: builder.query<{ text: string, cnt: number, name:number }[], void>({
+      query: () => 'stats/professions',
+    })
+
     
   }),
 })
 
-export const { useLoginMutation, useGetProfessionsQuery, useGetMeQuery, useGetPredictionsQuery, useSignUpMutation, useGetProfessionByIdQuery, useGetSexStatsQuery, useGetAgeStatsQuery } = api
+export const { useLoginMutation, useGetProfessionsQuery, useGetMeQuery, useGetPredictionsQuery, useSignUpMutation, useGetProfessionByIdQuery, useGetSexStatsQuery, useGetAgeStatsQuery, useGetProfessionsStatsQuery } = api

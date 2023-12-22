@@ -56,7 +56,7 @@ export const Dashboard = (() => {
       <Context.Provider value={contextValue}>
         {contextHolder}
         <Row justify={'space-between'} align={'middle'} style={{ marginBottom: 20, marginTop: 60 }}>
-          <h1 className='md:text-h1 text-mobile-h1 font-semibold w-[100px] uppercase'>
+          <h1 className='px-2 md:text-h1 text-mobile-h1 font-semibold w-[100px] uppercase'>
             подходящие
             профессии
           </h1>
@@ -73,7 +73,7 @@ export const Dashboard = (() => {
         </div>
 
         <Row justify={'space-between'} align={'middle'} style={{ marginBottom: 20, marginTop: 20 }}>
-          <h1 className='md:text-h1 text-mobile-h1 font-semibold w-[100px] uppercase'>
+          <h1 className='px-2 md:text-h1 text-mobile-h1 font-semibold w-[100px] uppercase'>
             Рекомендованные професии
           </h1>
         </Row>

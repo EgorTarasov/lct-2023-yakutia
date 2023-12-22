@@ -146,8 +146,6 @@ export function Admin() {
               }
             />
           </Form.Item>
-          <Form.Item label="Дата начала курса">
-          </Form.Item>
           <Form.Item label="Навык в резюме после прохождения курса">
             <Input
               placeholder="Основы математического анализа"

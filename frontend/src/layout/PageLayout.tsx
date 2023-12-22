@@ -12,6 +12,8 @@ type LayoutProps = {
   children: React.ReactNode;
 };
 
+
+
 export const PageLayout = ({ children }: LayoutProps) => {
   const auth = useAuth();
   const dispatch = useAppDispatch();
@@ -21,9 +23,9 @@ export const PageLayout = ({ children }: LayoutProps) => {
   };
 
   return (
-    <Layout>
-      <Header className="bg-white flex justify-between items-center pt-5" >
-        <Link to="/">
+    <>
+      <Header className="bg-white flex justify-around items-center pt-5 px-0" >
+        <Link to="/" className="hidden">
           <img src={Logo} />
         </Link>
         {auth.isAuth && (
@@ -50,9 +52,9 @@ export const PageLayout = ({ children }: LayoutProps) => {
           </div>
         )}
       </Header>
-      <Content className="flex flex-col justify-between md:px-[50px] bg-white">
+      <Content className="flex flex-col justify-between md:px-[50px] bg-white my-auto">
         {children}
       </Content>
-    </Layout>
+    </>
   );
 };

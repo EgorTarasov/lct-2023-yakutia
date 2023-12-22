@@ -109,12 +109,12 @@ export const Login = () => {
     };
 
     return (
-        <div className="flex flex-col items-center">
-            <div className="text-left text-h1 font-bold">
+        <div className="flex flex-col items-center justify-center sm:pt-10 md:pt-0 pt-14">
+            <div className="text-left text-h2 sm:text-h1 font-bold">
                 <h1>Добро</h1>
                 <h1>пожаловать!</h1>
             </div>
-            <div className="max-w-[300px] mt-12">
+            <div className="max-w-[300px] mt-8 sm:mt-12">
                 {isRegistering ? (
                     <div className="w-full">
                         <Formik

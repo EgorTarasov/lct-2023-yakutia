@@ -13,18 +13,18 @@ const Occupation = () => {
   console.log(data);
 
   return (
-    <div className=' flex flex-col py-10'>
+    <div className=' flex flex-col py-10 px-4'>
       {isLoading ? (
         <p className='text-center font-semibold text-h2'>Загрузка...</p>
       ) : (data && (
         <div className='mt-20 flex flex-col gap-5'>
           <div className='text-left'>
-            <h1 className='text-h1 text-left'>{data.name}</h1>
+            <h1 className='text-mobile-h1 font-semibold sm:text-h1 text-left'>{data.name}</h1>
             <div className='mt-10 text-lg' dangerouslySetInnerHTML={{ __html: data.descriptions[0].description }}></div>
           </div>
 
           <div className='text-left'>
-            <h1 className='text-h2'>Курсы, которые мы рекомендум:</h1>
+            <h1 className='text-mobile-h2 font-bold sm:text-h2'>Курсы, которые мы рекомендум:</h1>
           </div>
 
           <div className='flex pt-2 gap-5 w-full overflow-x-auto scrollbar-hide'>
