@@ -58,7 +58,6 @@ async def get_age_group(
 
 @router.get("/professions")
 async def get_professions_stats(
-    user: UserTokenData = Depends(get_current_user),
     db: AsyncSession = Depends(get_session),
 ) -> list[ProfessionVisitDataEntry]:
     """
