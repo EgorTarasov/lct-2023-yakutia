@@ -84,12 +84,24 @@ async def get_professions_stats(
     group by pv.profession_id, p.name
     order by count(profession_id) desc;
     """
-    stmt = sa.select(ProfessionVisit.profession_id, Profession.name)
-    #       {
-    #     "value": 11.739204307083542,
-    #     "text": "水是",
-    #     "name": "泰利斯"
-    #   },
+    # stmt = sa.select(ProfessionVisit.profession_id, Profession.name).join()
+
+    stmt = (
+        sa.select(
+            ProfessionVisit.profession_id,
+            Profession.name,
+            sa.func.count(ProfessionVisit.profession_id),
+        )
+        .select_from(ProfessionVisit)
+        .join(Profession, ProfessionVisit.profession_id == Profession.id)
+        .group_by(ProfessionVisit.profession_id, Profession.name)
+        .order_by(sa.desc(sa.func.count(ProfessionVisit.profession_id)))
+    )
+
     results = (await db.execute(stmt)).all()
+
     print(results)
-    return [{"value": value, "text": name, "name": name} for value, name in results]
+    return [
+        {"value": count, "text": prof_name, "name": prof_id}
+        for prof_id, prof_name, count in results
+    ]
