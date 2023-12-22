@@ -64,7 +64,7 @@ async def get_profesions(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Groups not found",
         )
-    logging.info(f"/me User<id={db_user.id}>")
+    logging.info(f"/pred User<id={db_user.id}>")
     user_groups = {
         group.name: {"description": group.description, "embeddings": group.embeddings}
         for group in db_user.groups
@@ -97,8 +97,6 @@ async def get_profesions(
 
     result = run.inference(user_groups, professions)[:5]  # type: ignore
 
-    # find all professions with name in result in db_professions
-    # and return them
     recomendations_stmt = (
         sa.select(Profession)
         .options(
