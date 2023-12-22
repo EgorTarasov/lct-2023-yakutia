@@ -2,37 +2,62 @@
 // @ts-nocheck
 
 import React, { useState, useEffect } from "react";
-import { PieChart, Pie, Tooltip, LineChart, Line, XAxis, YAxis, CartesianGrid, Legend } from "recharts";
-import { useGetAgeStatsQuery, useGetSexStatsQuery } from "../services/api";
+import { useGetAgeStatsQuery, useGetProfessionsStatsQuery, useGetSexStatsQuery } from "../services/api";
+import { WordCloud, Line } from "@ant-design/charts";
 
 export const Graphs = () => {
-  const [genderData, setGenderData] = useState([
-    {
-      name: "Женщины",
-      value: Math.floor(Math.random() * 100),
-    },
-    {
-      name: "Мужчины",
-      value: Math.floor(Math.random() * 100),
-    },
-  ]);
 
   const { data } = useGetSexStatsQuery();
-  const { data: ageData } = useGetAgeStatsQuery();
-  console.log(data);
-  console.log(ageData);
 
   return (
-    <div className="w-full mx-auto flex flex-col justify-center items-center mt-10">
-      <h1>Статистика по возрасту</h1>
-      <LineChart width={900} height={300} data={ageData}>
-        <XAxis dataKey="age" />
-        <YAxis />
-        <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-        <Line type="monotone" dataKey="cnt" stroke="#0d00ff" />
-        <Tooltip />
-        <Legend />
-      </LineChart>
+    <div className="w-full min-h-screen">
+      <div className="w-full">
+        <h1 className="text-mobile-h2 sm:text-h2 text-left pt-4 pl-4">Статистика по возрасту</h1>
+        <DemoLine />
+      </div>
+      <div>
+        <h1 className="text-mobile-h2 sm:text-h2 text-left pt-4 pl-4">Облако слов по популярности среди пользователей: </h1>
+        <DemoWordCloud />
+      </div>
     </div>
   );
+};
+
+export const DemoWordCloud = () => {
+
+  const { data } = useGetProfessionsStatsQuery();
+
+  const config = {
+    data: {
+      value: data,
+    },
+    layout: { spiral: 'rectangular' },
+    colorField: 'text',
+    backgroundColor: '#f30000',
+    tooltip: { visible: true, offset: 10 },
+  };
+  return <WordCloud {...config} />;
+};
+
+export const DemoLine = () => {
+
+  const { data } = useGetAgeStatsQuery();
+
+  const config = {
+    data: data,
+    xField: 'age',
+    yField: 'cnt',
+    point: {
+      shapeField: 'square',
+    },
+    interaction: {
+      tooltip: {
+        marker: false,
+      },
+    },
+    style: {
+      lineWidth: 2,
+    },
+  };
+  return <Line {...config} />;
 };

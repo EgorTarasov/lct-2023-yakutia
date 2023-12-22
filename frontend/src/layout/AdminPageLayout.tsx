@@ -22,16 +22,16 @@ export const AdminPageLayout = ({ children }: LayoutProps) => {
 
   return (
     <Layout>
-      <Header className="bg-white flex justify-between items-center pt-5" >
-        <Link to="/admin">
+      <Header className="bg-white flex justify-around items-center pt-5 px-2 sm:px-auto" >
+        <Link to="/admin" className="hidden">
           <img src={Logo} />
         </Link>
         {auth.isAuth && (
-          <div className="flex gap-5">
+          <div className="flex gap-2 sm:gap-5">
             <Link to="/admin" className="flex">
               <Button type="default">
                 <div className="flex justify-center gap-3">
-                  <p className="text-caption">Создать курс</p>
+                  <p className="text-caption">Добавить курс</p>
                 </div>
               </Button>
             </Link>
