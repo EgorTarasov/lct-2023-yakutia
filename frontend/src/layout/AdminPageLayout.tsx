@@ -28,17 +28,17 @@ export const AdminPageLayout = ({ children }: LayoutProps) => {
         </Link>
         {auth.isAuth && (
           <div className="flex gap-2 sm:gap-5">
-            <Link to="/admin" className="flex">
-              <Button type="default">
-                <div className="flex justify-center gap-3">
-                  <p className="text-caption">Добавить курс</p>
-                </div>
-              </Button>
-            </Link>
             <Link to="/graph" className="flex">
               <Button type="default">
                 <div className="flex justify-center gap-3">
                   <p className="text-caption">Статистика</p>
+                </div>
+              </Button>
+            </Link>
+            <Link to="/admin" className="flex">
+              <Button type="default">
+                <div className="flex justify-center gap-3">
+                  <p className="text-caption">Добавить курс</p>
                 </div>
               </Button>
             </Link>

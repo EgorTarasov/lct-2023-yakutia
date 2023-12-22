@@ -88,7 +88,7 @@ export const Login = () => {
             dispatch(setUserToken(access_token));
             dispatch(setIsAuth());
             console.log(access_token);
-            navigate("/admin");
+            navigate("/graph");
         } catch (err) {
             console.log(err, values);
         }
