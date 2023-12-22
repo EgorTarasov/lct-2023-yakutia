@@ -7,6 +7,7 @@ import { useGetPredictionsQuery, useGetProfessionsQuery } from '../services/api'
 import { useAppSelector } from '../../hooks/store';
 import axios from 'axios';
 import { NotificationPlacement } from 'antd/es/notification/interface';
+import { LoadingOutlined } from '@ant-design/icons';
 
 export const Dashboard = (() => {
   const [api, contextHolder] = notification.useNotification();
@@ -56,7 +57,7 @@ export const Dashboard = (() => {
       <Context.Provider value={contextValue}>
         {contextHolder}
         <Row justify={'space-between'} align={'middle'} style={{ marginBottom: 20, marginTop: 60 }}>
-          <h1 className='px-2 md:text-h1 text-mobile-h1 font-semibold w-[100px] uppercase'>
+          <h1 className='px-2 sm:px-0 md:text-h1 text-mobile-h1 font-semibold w-[100px] uppercase'>
             подходящие
             профессии
           </h1>
@@ -68,17 +69,21 @@ export const Dashboard = (() => {
               <OccupationCard occupation={recomendations.name} id={recomendations.id} key={recomendations.id} />
             ))
           ) : (
-            <p className='text-center font-semibold text-h3 text-primary-500 h-[200px]'>Определяем подходящие профессии...</p>
+            <div className="w-full h-full flex justify-center gap-3 items-center">
+              <LoadingOutlined />
+              <p className='text-center font-semibold text-base text-primary-500'>
+                Ищем лучшие професии для вас...</p>
+            </div>
           )}
         </div>
 
         <Row justify={'space-between'} align={'middle'} style={{ marginBottom: 20, marginTop: 20 }}>
-          <h1 className='px-2 md:text-h1 text-mobile-h1 font-semibold w-[100px] uppercase'>
+          <h1 className='px-2 sm:px-0 md:text-h1 text-mobile-h1 font-semibold w-[100px] uppercase'>
             Рекомендованные професии
           </h1>
         </Row>
 
-        <div className='flex py-4 gap-4 w-full overflow-x-auto scrollbar-hide'>
+        <div className='flex py-4 gap-4 overflow-y-hidden w-full overflow-x-auto scrollbar-hide h-full'>
           {Array.isArray(occupations) && occupations.map((occupation) => (
             <OccupationCard occupation={occupation.name} id={occupation.id} />
           ))}

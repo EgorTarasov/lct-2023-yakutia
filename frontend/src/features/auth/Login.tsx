@@ -214,7 +214,7 @@ export const Login = () => {
             </div>
             <div className="text-left text-h3 sm:text-h2 pt-4  sm:pt-16">
             </div>
-            <div className="h-[300px] w-full">
+            <div className="sm:h-[250px] sm:w-[700px] w-full h-full">
                 <DemoWordCloud />
             </div>
             <div className="max-w-[350px] w-full flex flex-col gap-5">

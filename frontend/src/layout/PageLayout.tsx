@@ -24,7 +24,7 @@ export const PageLayout = ({ children }: LayoutProps) => {
 
   return (
     <>
-      <Header className="bg-white flex justify-around sm:justify-between items-center pt-5 px-0 sm:px-10" >
+      <Header className="bg-white flex justify-around sm:justify-between items-center pt-5 px-0 sm:px-[50px]" >
         <Link to="/" className="hidden sm:block">
           <img src={Logo} />
         </Link>

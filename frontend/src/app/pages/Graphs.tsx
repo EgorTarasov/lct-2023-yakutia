@@ -33,6 +33,7 @@ export const DemoWordCloud = () => {
     },
     layout: { spiral: 'rectangular' },
     colorField: 'text',
+    width: 500,
     height: 500,
     tooltip: {
       title: (d) => (d.cnt > 100 ? d.name : d.text), // transform

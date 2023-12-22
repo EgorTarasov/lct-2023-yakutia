@@ -22,7 +22,7 @@ export const AdminPageLayout = ({ children }: LayoutProps) => {
 
   return (
     <Layout>
-      <Header className="bg-white flex justify-around items-center pt-5 px-2 sm:px-auto" >
+      <Header className="bg-white flex justify-around items-center pt-5 px-2 sm:px-[50px]" >
         <Link to="/admin" className="hidden">
           <img src={Logo} />
         </Link>
