@@ -8,6 +8,7 @@ from .profession import (
     ProfessionCreate,
 )
 from .course import ExternalCourseDto, ExternalCourseCreate, ExternalCourseDto
+from .stats import SexDataEntry, AgeDataEntry, ProfessionVisitDataEntry
 
 
 __all__ = [
@@ -26,4 +27,7 @@ __all__ = [
     "ExternalCourseDto",
     "ExternalCourseCreate",
     "ExternalCourseDto",
+    "SexDataEntry",
+    "AgeDataEntry",
+    "ProfessionVisitDataEntry",
 ]
