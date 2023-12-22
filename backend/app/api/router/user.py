@@ -44,8 +44,6 @@ async def get_profesions(
     user: UserTokenData = Depends(get_current_user),
     db: AsyncSession = Depends(get_session),
 ) -> list[ProfessionDto]:
-    # get users group and put it into dict with format:
-    # {group_id: {group_name: group_name, description: description}}
 
     user_stmt = (
         sa.select(VkUser)
@@ -70,8 +68,6 @@ async def get_profesions(
         for group in db_user.groups
     }
 
-    # select all professions from db and assemble class dict
-
     prof_stmt = sa.select(Profession).options(
         orm.selectinload(Profession.descriptions),
         orm.selectinload(Profession.embeddings),
@@ -90,10 +86,6 @@ async def get_profesions(
         }
         for obj in db_professions
     ]
-    with open("test_prof.json", "w") as f:
-        json.dump(professions, f, indent=4, ensure_ascii=False)
-    with open("test_groups.json", "w") as f:
-        json.dump(user_groups, f, indent=4, ensure_ascii=False)
 
     result = run.inference(user_groups, professions)[:5]  # type: ignore
 

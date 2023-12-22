@@ -1,5 +1,5 @@
 import datetime as dt
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class VkGroupInfo(BaseModel):
@@ -10,6 +10,8 @@ class VkGroupInfo(BaseModel):
     photo_50: str
     photo_100: str
     photo_200: str
+
+    model_config = ConfigDict(from_attributes=True)
 
 
 class VkUserInfo(BaseModel):
@@ -25,4 +27,6 @@ class VkUserDto(BaseModel):
     sex: str
     city: str
 
-    photo_url: list[VkGroupInfo]
+    photo_url: str
+
+    model_config = ConfigDict(from_attributes=True)
