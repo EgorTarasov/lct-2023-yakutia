@@ -40,7 +40,7 @@ export function Profile() {
       {user ? <div className="text-center pt-10">
         <Avatar
           size={100}
-          src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+          src={user.photo_url.photo_100}
           className="mx-auto" />
         <div>
           <h4 className="font-semibold m-0 text-h3">{user.first_name} {user.last_name}</h4>

@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useGetAgeStatsQuery, useGetProfessionsStatsQuery, useGetSexStatsQuery } from "../services/api";
-import { WordCloud, Line } from "@ant-design/charts";
+import { WordCloud, Line, Pie } from "@ant-design/charts";
 
 export const Graphs = () => {
 
@@ -16,8 +16,8 @@ export const Graphs = () => {
         <DemoLine />
       </div>
       <div>
-        <h1 className="text-mobile-h2 sm:text-h2 text-left pt-4 pl-4">Облако слов по популярности среди пользователей: </h1>
-        <DemoWordCloud />
+        <h1 className="text-mobile-h2 sm:text-h2 text-left pt-4 pl-4">Статистика по популярным профессиям: </h1>
+        <DemoPie />
       </div>
     </div>
   );
@@ -33,8 +33,10 @@ export const DemoWordCloud = () => {
     },
     layout: { spiral: 'rectangular' },
     colorField: 'text',
-    backgroundColor: '#f30000',
-    tooltip: { visible: true, offset: 10 },
+    height: 500,
+    tooltip: {
+      title: (d) => (d.cnt > 100 ? d.name : d.text), // transform
+    }
   };
   return <WordCloud {...config} />;
 };
@@ -60,4 +62,30 @@ export const DemoLine = () => {
     },
   };
   return <Line {...config} />;
+};
+
+export const DemoPie = () => {
+
+  const { data } = useGetProfessionsStatsQuery();
+
+  console.log(data);
+  const formattedData = [];
+
+  for (const dataItem of data) {
+    const formattedItem = {
+      type: dataItem.text,
+      value: dataItem.value,
+    };
+
+    formattedData.push(formattedItem);
+  }
+  const config = {
+    appendPadding: 10,
+    data: formattedData,
+    angleField: 'value',
+    colorField: 'type',
+    radius: 1,
+    innerRadius: 0.6,
+  };
+  return <Pie {...config} />;
 };

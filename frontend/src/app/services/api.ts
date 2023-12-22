@@ -24,7 +24,7 @@ export type VkUser = {
     photo_50: string
     photo_100: string
     photo_200: string
-  }[]
+  }
 }
 
 export interface UserResponse {

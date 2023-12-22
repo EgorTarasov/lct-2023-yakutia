@@ -24,8 +24,8 @@ export const PageLayout = ({ children }: LayoutProps) => {
 
   return (
     <>
-      <Header className="bg-white flex justify-around items-center pt-5 px-0" >
-        <Link to="/" className="hidden">
+      <Header className="bg-white flex justify-around sm:justify-between items-center pt-5 px-0 sm:px-10" >
+        <Link to="/" className="hidden sm:block">
           <img src={Logo} />
         </Link>
         {auth.isAuth && (

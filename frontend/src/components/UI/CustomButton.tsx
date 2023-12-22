@@ -8,9 +8,9 @@ type Props = {
   colorType?: 'primary' | 'secondary' | 'outline';
 };
 
-export const Button = ({ children, onClick, type, colorType = "primary" }: Props) => {
+export const CustomButton = ({ children, onClick, type, colorType = "primary" }: Props) => {
   const buttonClasses = clsx(
-    "py-2 px-3 rounded-input w-full min-h-fit flex justify-center items-center",
+    "py-4 px-3 rounded-input w-full min-h-fit flex justify-center items-center",
     {
       "bg-white text-primary-900": colorType === "secondary",
       "bg-white text-primary-900 border border-2 border-primary-900": colorType === "outline",
