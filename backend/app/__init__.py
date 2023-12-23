@@ -23,13 +23,12 @@ def create_app() -> FastAPI:
         filemode="w",
     )
 
-    # db = Database(settings)
     app = FastAPI(
         title="IFoundMisis",
         version="0.0.1",
         description="Rest api for frontend Application",
-        docs_url=f"{settings.api_prefix}/docs",
-        openapi_url=f"{settings.api_prefix}/openapi.json",
+        docs_url=None,
+        openapi_url=None,
         lifespan=lifespan,
     )
 
