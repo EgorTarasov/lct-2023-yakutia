@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAppSelector } from "../../hooks/store";
 import { useGetMeQuery } from "../services/api";
+import { LoadingOutlined } from "@ant-design/icons";
 
 export function Profile() {
 
@@ -40,7 +41,7 @@ export function Profile() {
       {user ? <div className="text-center pt-10">
         <Avatar
           size={100}
-          src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+          src={user.photo_url.photo_50}
           className="mx-auto" />
         <div>
           <h4 className="font-semibold m-0 text-h3">{user.first_name} {user.last_name}</h4>
@@ -75,10 +76,12 @@ export function Profile() {
               <Col span={24} md={12} xl={6} key={index}><OccupationCard occupation={recomendations.name} id={recomendations.id} key={recomendations.id} /></Col>
             ))
           ) : (
-            <p className='text-center font-semibold text-h3 text-primary-500 h-[200px]'>Ищем лучшие для вас професии...</p>
+            <div className="w-full h-full flex justify-center gap-3 items-center">
+              <LoadingOutlined />
+              <p className='text-center font-semibold text-base text-primary-500'>
+                Ищем лучшие професии для вас...</p>
+            </div>
           )}
-
-
         </Row>
       </Card>
     </>
